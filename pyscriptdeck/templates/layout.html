@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+
+<head>
+  {% block head %}
+  <meta charset="utf-8">
+  <title>{{ app_title }} - {% block title %}{% endblock %}</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+  <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/skeleton.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.27.0/moment.min.js"></script>
+
+  {% if config["ENV"] == "development" %}
+    <!-- development version, includes helpful console warnings -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  {% else %}
+    <!-- production version, optimized for size and speed -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.11"></script>
+  {% endif %}
+  <script src="{{ url_for('static', filename='vuejs/common.js') }}"></script>
+
+  {% endblock %}
+</head>
+
+<body>
+  <div class="container">
+
+    <a href="{{ url_for('index') }}"><h1 class="navLink"> {{ app_title }} </h1></a>
+
+    {% if session["user"] %}
+      <a href="{{ url_for('history') }}"><p class="navLink menu">History</p></a>
+
+      <div class="userZone">
+        <small>Connected as <em> {{ session["user"] }} </em></small>
+        <a class="button-small button" href="{{ url_for('logout') }}">Sign out</a>
+      </div>
+    {% endif %}
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}
+    {% endblock %}
+  </div>
+</body>
+
+</html>

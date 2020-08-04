@@ -1,0 +1,12 @@
+__pycache__
+/build
+/dist
+.env
+
+.eggs
+/PyScriptDeck.egg-info
+
+/db/*
+!/db/.gitempty
+/log/*
+!/log/.gitempty

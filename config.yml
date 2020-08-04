@@ -1,0 +1,30 @@
+app.title: PyScriptDeck
+app.version: 0.1.0
+app.defaultPassword: admin1234
+app.databasePath: db/database.db
+app.demo: true
+
+app.script.modules:
+  - pyscriptdeck.base.execution
+  - pyscriptdeck.base.user
+  - pyscriptdemo.helloworld
+  - pyscriptdemo.calculatedemo
+  - pyscriptdemo.encoderdemo
+  - pyscriptdemo.apidemo
+
+pyscriptdemo.helloworld.HelloWorld:
+  hello: Mister
+  number: 7
+
+pyscriptdemo.calculatedemo.CalculatePi:
+  maxIteration: 100000
+
+pyscriptdemo.calculatedemo.CalculateFibonacci:
+  maxPosition: 500
+
+pyscriptdemo.apidemo.SimpleApi:
+  url: https://yesno.wtf/api
+
+pyscriptdemo.apidemo.WeatherApi:
+  url: https://api.openweathermap.org/data/2.5/weather
+  api-key: ${DEMO_WEATHER_API_KEY}

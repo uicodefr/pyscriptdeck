@@ -1,0 +1,43 @@
+<script type="text/x-template" id="execution-history-template">
+<div class="executionHistoryComponent">
+
+  <table class="u-full-width">
+    <thead>
+      <tr>
+        <th>Run at</th>
+        <th v-if="showScript">Script</th>
+        <th>Status</th>
+        <th>Message</th>
+        <th>Run by</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="execution in executions">
+        <td> [[ execution.runAt | formatDatetime ]] </td>
+        <td v-if="showScript"><small class="breakWord"> [[ execution.scriptId ]] </small></td>
+        <td v-bind:class="{ error: !execution.success, success: execution.success}">
+          <span v-if="execution.success"> &check; </span>
+          <span v-else> &cross; </span>
+        </td>
+        <td> [[ execution.message ]] </td>
+        <td> [[ execution.executedBy ]] </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>
+</script>
+
+<script type="text/javascript">
+  Vue.component('execution-history', {
+    delimiters: ['[[', ']]'],
+    template: '#execution-history-template',
+    props: {
+      executions: Array,
+      showScript: {
+        type: Boolean,
+        default: false
+      }
+    }
+  });
+</script>

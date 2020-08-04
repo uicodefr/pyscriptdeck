@@ -1,0 +1,95 @@
+html {
+  min-height: 100vh;
+}
+
+body {
+  background-color: #f2f5f5;
+  background-image: url("/static/image/background.png");
+  background-repeat: repeat;
+  min-height: 100vh;
+}
+
+.container {
+  background-color: white;
+  padding: 10px;
+  min-height: 100vh;
+  max-width: 1140px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.loading {
+  font-size: 3em;
+  text-align: center;
+  font-style: italic;
+}
+
+.radio-label {
+  font-weight: normal;
+  display: inline;
+  margin-left: 10px;
+}
+
+.center {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+.warning {
+  color: darkorange;
+  font-weight: bold;
+}
+
+.success {
+  color: green;
+  font-weight: bold;
+}
+
+.button-small {
+  padding: 0 15px;
+  font-size: 10px;
+  text-transform: capitalize;
+  height: 28px;
+  line-height: 28px;
+}
+
+.border {
+  border: 1px solid #E1E1E1;
+  border-radius: 4px;
+}
+
+.flashes {
+  font-size: 1rem;
+}
+
+.navLink {
+  display: inline-block;
+  margin-right: 20px;
+}
+.navLink.menu {
+  font-size: 1.75rem;
+}
+.userZone {
+  float: right;
+}
+.userZone small {
+  margin-right: 1rem;
+}
+
+.breakWord {
+  word-break: break-all;
+}
+
+.demoNote {
+  font-style: italic;
+  background-color: #33C3F022;
+  border-radius: 4px;
+  margin-top: 1.5rem;
+}

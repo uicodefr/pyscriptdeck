@@ -1,0 +1,77 @@
+<script type="text/x-template" id="param-script-template">
+<div class="paramScriptComponent">
+
+  <label v-if="param.type != 'checkbox'" :for="'param_' + param.id">
+    [[ param.label ]]
+  </label>
+
+  <template v-if="standardInputTypes.includes(param.type)">
+    <input :id="'param_' + param.id" :type="param.type" :placeholder="param.placeholder"
+      v-model="paramValue" class="u-full-width" />
+  </template>
+
+  <template v-else-if="param.type == 'checkbox'">
+    <label>
+      <input type="checkbox" v-model="paramValue" />
+      <span class="label-body">[[ param.label ]]</span>
+    </label>
+  </template>
+
+  <template v-else-if="param.type == 'textarea'">
+    <textarea :placeholder="param.placeholder" v-model="paramValue"
+    class="u-full-width"></textarea>
+  </template>
+
+  <template v-else-if="param.type == 'radio'">
+    <label v-for="radioValue in param.values" class="radio-label">
+      <input type="radio" :name="param.id" :value="radioValue.value"
+        v-model="paramValue" />
+        [[ radioValue.label ]]
+    </label>
+  </template>
+
+  <template v-else-if="param.type == 'select'">
+    <select v-model="paramValue" :multiple="param.multiple" class="u-full-width">
+      <option v-for="selectValue in param.values" :value="selectValue.value">
+        [[ selectValue.label ]]
+      </option>
+    </select>
+  </template>
+
+  <template v-else-if="!param.type">
+  </template>
+
+  <template v-else>
+    <p class="error">Unknown param type : [[ param.type ]]</p>
+  </template>
+
+</div>
+</script>
+
+<script type="text/javascript">
+  Vue.component('param-script', {
+    delimiters: ['[[', ']]'],
+    template: '#param-script-template',
+    props:  ['param'],
+    data: function() {
+      return {
+        standardInputTypes: ['text', 'password', 'number', 'date', 'datetime', 'time',
+          'email', 'url'],
+        paramValue: this.param.default
+      }
+    },
+    methods: {
+      resetParamValue: function() {
+        this.paramValue = this.param.default;
+      }
+    },
+    watch: {
+      paramValue: {
+        handler: function(newParamValue, oldParamValue) {
+          this.$emit('value-change', newParamValue);
+        },
+        immediate: true,
+      }
+    }
+  });
+</script>

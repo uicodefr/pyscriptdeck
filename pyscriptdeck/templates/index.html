@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block content %}
+<div id="app-index">
+  <form @submit.prevent>
+    <div class="row">
+      <div class="six columns">
+        <label for="qInput">Search</label>
+        <input class="u-full-width" type="text" id="qInput" v-model="searchForm.txt">
+      </div>
+      <div class="six columns">
+        <label for="groupSelect">Group</label>
+        <select class="u-full-width" id="groupSelect" v-model="searchForm.group">
+          <option value=""></option>
+          <option v-for="group in groups" :value="group">[[ group ]]</option>
+        </select>
+      </div>
+    </div>
+  </form>
+
+  <div class="loading" v-if="loading">
+    Loading ...
+  </div>
+
+  <table class="u-full-width" v-if="!loading">
+    <thead>
+      <tr>
+        <th>Group</th>
+        <th>Name</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="script in filteredScripts">
+        <td> [[ script.group ]] </td>
+        <td> [[ script.name ]] </td>
+        <td> [[ script.description ]] </td>
+        <td class="right">
+          <a class="button button-primary" :href="'{{ url_for('script', script_id='') }}' + script.id">
+            open
+          </a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  const url_api_get_scripts = "{{ url_for('api_get_scripts') }}"
+  const url_api_get_groups = "{{ url_for('api_get_groups') }}"
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='vuejs/index.js') }}"></script>
+{% endblock %}

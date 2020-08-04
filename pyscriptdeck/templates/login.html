@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% endblock %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block content %}
+<div class="border loginForm">
+  <form method="POST">
+    {% if error %}
+      <div class="error center">{{ error }}</div>
+    {% endif %}
+
+    <label>Login</label>
+    <input type="text" name="login" required="required" class="u-full-width" />
+    <label>Password</label>
+    <input type="password" name="password" required="required" class="u-full-width" />
+    <div class="center">
+      <button type="submit" class="button-primary signInBtn">Sign in</button>
+    </div>
+
+    {% if app_demo %}
+      <div class="demoNote">
+        <strong>Demo version.</strong> <br />
+        Use the login "admin" and the password "demo123" for Sign in.
+      </div>
+    {% endif %}
+
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+.paramsBlock {
+  padding: 5px;
+  margin-bottom: 2.5rem;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+}
+
+.flexParamBoard {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+
+.flexParam {
+  display: block;
+  width: calc(50% - 20px);
+  padding: 10px;
+}
+
+.dataOutput {
+  background-color: #33C3F011;
+  border-radius: 4px;
+  padding: 5px;
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
+  font-size: 85%;
+}

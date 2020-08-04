@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/script.css') }}">
+{% endblock %}
+
+{% block title %}
+Script
+{% endblock %}
+
+{% block content %}
+{% include 'component/param-script.html' %}
+{% include 'component/execution-history.html' %}
+<div id="app-script">
+
+  <div class="loading" v-if="loading">
+    Loading ...
+  </div>
+
+  <form v-if="!loading" @submit.prevent="run">
+    <h3>[[ script.name ]]</h3>
+    <p v-if="script.description">[[ script.description ]]</p>
+
+    <div class="border paramsBlock">
+      <div v-if="script.params && script.params.length == 0" class="center">
+        <em>No params</em>
+      </div>
+      <div v-else>
+        <div class="flexParamBoard">
+          <div v-for="param in script.params" class="flexParam">
+            <param-script :key="param.id" :param="param" :ref="'param-script-' + param.id"
+              @value-change="onValueChange(param.id, $event)">
+            </param-script>
+          </div>
+        </div>
+        <button type="button" class="button-small" @click="resetForm()">Reset form</button>
+      </div>
+    </div>
+
+    <div class="center">
+      <button v-if="!running" type="submit" class="button-primary">Run</button>
+      <img v-else src="{{ url_for('static', filename='image/bar-loader.gif') }}" alt="running" />
+    </div>
+  </form>
+
+  <div v-if="error" class="error">
+    <strong>Technical Error : [[ error ]]</strong>
+  </div>
+
+  <div v-if="runResult">
+    <div class="center" v-bind:class="{ error: !runResult.success, success: runResult.success }">
+      <span v-if="runResult.success"> &check; </span>
+      <span v-else> &cross; </span>
+      <strong>[[ runResult.message ]]</strong>
+      <small>at [[ runResult.runAt | formatTime ]]</small>
+    </div>
+    <pre v-if="runResult.dataOutput" class="dataOutput">[[ runResult.dataOutput ]]</pre>
+  </div>
+
+  <hr />
+  <h5>Execution history for the script</h5>
+  <execution-history v-if="!loading" :executions="script.executions"></execution-history>
+
+</div>
+
+<script type="text/javascript">
+  const script_id = "{{script_id}}"
+  const url_api_get_scripts = "{{ url_for('api_get_scripts') }}"
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='vuejs/script.js') }}"></script>
+{% endblock %}

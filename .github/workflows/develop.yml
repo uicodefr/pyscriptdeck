@@ -1,0 +1,73 @@
+name: Develop CI
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Init
+      run: |
+        version=$(sed "s/^    version=\"\(.*\)\",$/\1/;t;d" setup.py)
+        echo "Version: "$version
+        if [[ ! $version =~ "SNAPSHOT" ]]; then
+          echo ERROR: Wrong version 1>&2
+          exit 1
+        fi
+        echo $version > ./version.txt
+      working-directory: ${{ env.working-directory }}
+
+    - name: Test
+      run: make test
+      working-directory: ${{ env.working-directory }}
+
+    - name : Build
+      run: make build
+      working-directory: ${{ env.working-directory }}
+
+    - name : Containerize Demo
+      run: make containerize_demo
+      working-directory: ${{ env.working-directory }}
+
+    - name : Prepare Deploy
+      uses: actions/upload-artifact@v2
+      with:
+        name: version
+        path: version.txt
+
+
+  deploy_demo:
+    needs: [build]
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.QA_HOST }}
+      SSH_KEY: ${{ secrets.QA_SSH_KEY }}
+
+    steps:
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: version
+
+      - name: Deploy
+        run: |
+          demoVersion=$(cat version.txt)
+          echo "version: $demoVersion"
+          which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
+          eval $(ssh-agent)
+          echo "$SSH_KEY" | tr -d '\r' | ssh-add -
+          ssh -o StrictHostKeyChecking=no $SSH_HOST "cd appdemos && sudo ./deploy.sh pyscriptdemo _ $demoVersion && exit"
+

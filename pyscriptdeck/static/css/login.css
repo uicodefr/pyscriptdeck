@@ -1,0 +1,19 @@
+.loginForm {
+  background-color: white;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 10rem;
+  padding: 20px;
+}
+
+.container {
+  background: none;
+}
+form {
+  margin-bottom: 0;
+}
+
+.signInBtn {
+  margin-top: 1rem;
+  margin-bottom: 0;
+}

@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block title %}
+History
+{% endblock %}
+
+{% block content %}
+{% include 'component/execution-history.html' %}
+<div id="app-history">
+
+  <h3>Execution History</h3>
+
+  <div class="loading" v-if="loading">
+    Loading ...
+  </div>
+  <execution-history v-if="!loading" :executions="executions" :show-script="true">
+  </execution-history>
+
+</div>
+
+<script type="text/javascript">
+  const url_api_get_executions = "{{ url_for('api_get_executions') }}"
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='vuejs/history.js') }}"></script>
+{% endblock %}
