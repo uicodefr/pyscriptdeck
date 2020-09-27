@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  # ONLY triggers on master branch
+  repository_dispatch:
+    types: [build-master]
 
 jobs:
   build:
@@ -14,6 +17,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+      with:
+        ref: master
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
