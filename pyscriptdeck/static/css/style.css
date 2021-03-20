@@ -93,3 +93,8 @@ body {
   border-radius: 4px;
   margin-top: 1.5rem;
 }
+
+.info {
+  width: 800px;
+  margin: auto;
+}

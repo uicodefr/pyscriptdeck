@@ -10,8 +10,8 @@ def test_hello(app, client):
     response = client.post("/api/scripts/" + _SCRIPT_ID_HELLO + "/_run")
     assert response.json["success"]
     assert response.json["message"] == "Hello World !"
-    assert response.json["dataOutput"]["config_hello"] == "Mister"
-    assert response.json["dataOutput"]["config_number"] == 7
+    test_output = "Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister"
+    assert response.json["dataOutput"] == test_output
 
 
 def test_hello_with_params(app, client):

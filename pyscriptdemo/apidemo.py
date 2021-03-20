@@ -10,7 +10,7 @@ class YesNoResponse(BaseModel):
 
 class SimpleApi(ScriptDeck):
     def __init__(self):
-        super(SimpleApi, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(
@@ -42,7 +42,7 @@ class SimpleApi(ScriptDeck):
 
 class WeatherApi(ScriptDeck):
     def __init__(self):
-        super(WeatherApi, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(

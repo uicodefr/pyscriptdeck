@@ -8,7 +8,7 @@ with open('requirements-test.txt') as file:
 
 setup(
     name="PyScriptDeck",
-    version="0.2.1-SNAPSHOT",
+    version="0.2.2-SNAPSHOT",
     description="Web App that allows you to launch python scripts",
     url="https://github.com/uicodefr/pyscriptdeck",
     license="MIT",

@@ -20,13 +20,15 @@ class ScriptResult(BaseModel):
     success: bool
     message: str
     dataOutput: Any
+    template: str = "json"
 
 class ScriptException(Exception):
     """ Exception for ScriptDeck """
     _status = 500
 
     def __init__(self, message: str, status: int = None):
-        super(ScriptException, self).__init__(message)
+        super().__init__()
+        self.message = message
         if status is not None:
             self._status = status
 

@@ -33,10 +33,8 @@ def test_api_script(client):
 
     response = client.post("/api/scripts/" + _SCRIPT_ID + "/_run")
     assert response.status_code == 200
-    assert response.json["dataOutput"] == {
-        "config_hello": "Mister",
-        "config_number": 7
-    }
+    test_output = "Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister"
+    assert response.json["dataOutput"] == test_output
     assert response.json["message"] == "Hello World !"
     assert response.json["runAt"] > 1597672257
     assert response.json["success"]

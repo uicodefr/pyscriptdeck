@@ -17,11 +17,20 @@
   padding: 10px;
 }
 
-.dataOutput {
-  background-color: #33C3F011;
+.dataOutputJson, .dataOutputText, .dataOutputTable {
   border-radius: 4px;
   padding: 5px;
+  margin-top: 1rem;
   margin-left: 2.5rem;
   margin-right: 2.5rem;
+}
+
+.dataOutputJson {
+  background-color: #33C3F011;
   font-size: 85%;
+}
+
+.dataOutputText {
+  background-color: #E1E1E133;
+  text-align: justify;
 }

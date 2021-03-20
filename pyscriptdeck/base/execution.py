@@ -6,7 +6,7 @@ from pyscriptdeck.dao import ExecutionHistoryDao
 class CleanHistory(ScriptDeck):
     """ Clean the history of the execution """
     def __init__(self):
-        super(CleanHistory, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(

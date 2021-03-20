@@ -55,7 +55,34 @@ Script
       <strong>[[ runResult.message ]]</strong>
       <small>at [[ runResult.runAt | formatTime ]]</small>
     </div>
-    <pre v-if="runResult.dataOutput" class="dataOutput">[[ runResult.dataOutput ]]</pre>
+    <template v-if="runResult.dataOutput">
+      <pre v-if="runResult.template == 'json'" class="dataOutputJson">[[ runResult.dataOutput ]]</pre>
+      <div v-if="runResult.template == 'text'" class="dataOutputText">
+        [[ runResult.dataOutput ]]
+      </div>
+      <div v-if="runResult.template == 'table'" class="dataOutputTable">
+        <table v-if="runResult.dataOutput.length > 0" class="u-full-width">
+            <thead>
+              <tr>
+                <th v-for="header in runResult.dataOutput[0]">[[ header ]]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="rowData in runResult.dataOutput.slice(1)">
+                <td v-for="caseData in rowData">
+                  <template v-if="caseData === false || caseData === true">
+                    <span v-if="caseData" class="success"> &check; </span>
+                    <span v-else class="error"> &cross; </span>
+                  </template>
+                  <template v-else>
+                    [[ caseData ]]
+                  </template>
+                </td>
+              </tr>
+            </tbody>
+        </table>
+      </div>
+    </template>
   </div>
 
   <hr />

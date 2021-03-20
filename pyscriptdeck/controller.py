@@ -1,6 +1,6 @@
+import json
 from flask import Flask, request, abort, jsonify, render_template
 from flask import redirect, url_for, session, flash
-import json
 from werkzeug.exceptions import HTTPException
 from pyscriptdeck.config import getconfig
 from pyscriptdeck.main import Main
@@ -12,6 +12,10 @@ def init_app(app: Flask, main: Main):
     def index():
         return render_template("index.html")
 
+    @app.route("/info")
+    def info():
+        return render_template("info.html", status=main.get_status())
+
     @app.route("/history")
     def history():
         return render_template("history.html")
@@ -20,6 +24,12 @@ def init_app(app: Flask, main: Main):
     def script(script_id=None):
         check_script_id(script_id)
         return render_template("script.html", script_id=script_id)
+
+    def check_script_id(script_id):
+        if script_id is None:
+            abort(400, "script_id is None")
+        if not main.is_script_exist(script_id):
+            abort(404, "script not found for id '{}'".format(script_id))
 
     @app.route("/api/scripts")
     def api_get_scripts():
@@ -103,8 +113,7 @@ def init_app(app: Flask, main: Main):
         response.content_type = "application/json"
         return response
 
-    def check_script_id(script_id):
-        if script_id is None:
-            abort(400, "script_id is None")
-        if not main.is_script_exist(script_id):
-            abort(404, "script not found for id '{}'".format(script_id))
+    def to_pretty_json(value):
+        return json.dumps(value, sort_keys=True, indent=4, separators=(',', ': '))
+
+    app.jinja_env.filters['tojson_pretty'] = to_pretty_json

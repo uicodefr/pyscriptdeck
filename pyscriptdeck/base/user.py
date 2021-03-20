@@ -6,7 +6,7 @@ from pyscriptdeck.dao import UserDao, db_commit
 class ChangePassword(ScriptDeck):
     """ Change password for the main user """
     def __init__(self):
-        super(ChangePassword, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(

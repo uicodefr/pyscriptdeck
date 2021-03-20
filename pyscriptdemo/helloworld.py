@@ -4,7 +4,7 @@ from pyscriptdeck.common import ScriptDeck, ScriptDescription, ScriptResult
 class HelloWorld(ScriptDeck):
     """ HelloWorld script just for test """
     def __init__(self):
-        super(HelloWorld, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(
@@ -14,17 +14,39 @@ class HelloWorld(ScriptDeck):
 
     def run(self, data_input):
         message = "Hello World !"
-        data = {
-            "config_hello": self.get_config("hello"),
-            "config_number": self.get_config("number")
-        }
-        return ScriptResult(success=True, message=message, dataOutput=data)
+        data_array = []
+        for _ in range(self.get_config("number")):
+            data_array.append("Hello " + self.get_config("hello"))
+        data = ", ".join(data_array)
+
+        return ScriptResult(success=True, message=message, dataOutput=data, template="text")
+
+class HelloWorldTable(ScriptDeck):
+    """ HelloWorld script with table in output """
+    def __init__(self):
+        super().__init__(__name__)
+
+    def get_description(self):
+        return ScriptDescription(
+            group="demo", name="Hello world with table",
+            description="Hello world with table in ouput", params=[]
+        )
+
+    def run(self, data_input):
+        message = "Hello World with table !"
+        data = []
+        data.append(["String", "Number", "Boolean"])
+        data.append(["Hello", 12, True])
+        data.append(["OK", 20, False])
+        data.append(["Bye", 3.14, True])
+
+        return ScriptResult(success=True, message=message, dataOutput=data, template="table")
 
 
 class HelloWorldWithParams(ScriptDeck):
     """ HelloWorld script with params """
     def __init__(self):
-        super(HelloWorldWithParams, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(

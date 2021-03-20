@@ -9,13 +9,13 @@ all:
 	@echo "do nothing (version: $(VERSION))"
 
 test:
-	pip install -r requirements.txt
-	pip install -r requirements-test.txt
+	pip install -r requirements.txt -U
+	pip install -r requirements-test.txt -U
 	pytest
 
 build:
-	pip install -r requirements.txt
-	pip install twine
+	pip install -r requirements.txt -U
+	pip install twine -U
 	python setup.py clean sdist
 	twine upload dist/* --repository-url $(PYPI_URL) -u $(NEXUS_USER) -p $$NEXUS_PASSWORD
 

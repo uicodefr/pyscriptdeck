@@ -5,7 +5,7 @@ from pyscriptdeck.common import ScriptDeck, ScriptDescription, ScriptResult
 
 class Base64Encoder(ScriptDeck):
     def __init__(self):
-        super(Base64Encoder, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(
@@ -51,7 +51,7 @@ class Base64Encoder(ScriptDeck):
 
 class BCryptGenerateHash(ScriptDeck):
     def __init__(self):
-        super(BCryptGenerateHash, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(

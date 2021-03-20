@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block title %}
+Info
+{% endblock %}
+
+{% block content %}
+{% include 'component/execution-history.html' %}
+<div id="app-history">
+
+  <div class="info">
+    <h3>Info</h3>
+    <pre>{{ status | tojson_pretty }}</pre>
+  </div>
+
+
+</div>
+
+{% endblock %}

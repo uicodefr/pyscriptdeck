@@ -1,5 +1,5 @@
 app.title: PyScriptDeck
-app.version: 0.1.0
+app.version: 0.2.0
 app.defaultPassword: admin1234
 app.databasePath: db/database.db
 app.demo: true

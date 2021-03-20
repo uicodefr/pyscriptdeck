@@ -4,7 +4,7 @@ from pyscriptdeck.common import ScriptDeck, ScriptDescription, ScriptResult
 
 class CalculatePi(ScriptDeck):
     def __init__(self):
-        super(CalculatePi, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(
@@ -43,7 +43,7 @@ class CalculatePi(ScriptDeck):
 
 class CalculateFibonacci(ScriptDeck):
     def __init__(self):
-        super(CalculateFibonacci, self).__init__(__name__)
+        super().__init__(__name__)
 
     def get_description(self):
         return ScriptDescription(

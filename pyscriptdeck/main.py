@@ -71,7 +71,14 @@ class Main:
             script_id, EXECUTION_HISTORY_LIMIT)))
 
     def run_script(self, script_id: str, data_input: Dict):
-        script_result = self._scripts[script_id].run(data_input).dict()
+        try:
+            script_result = self._scripts[script_id].run(data_input).dict()
+        except Exception as exception:
+            logger.exception("Error while running the script %s", script_id)
+            script_result = {}
+            script_result["success"] = False
+            script_result["message"] = getattr(exception, 'message', repr(exception))
+
         script_result["runAt"] = datetime.now().timestamp()
 
         user_id = self.get_current_user_id()
