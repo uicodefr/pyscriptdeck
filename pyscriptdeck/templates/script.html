@@ -10,8 +10,6 @@ Script
 {% endblock %}
 
 {% block content %}
-{% include 'component/param-script.html' %}
-{% include 'component/execution-history.html' %}
 <div id="app-script">
 
   <div class="loading" v-if="loading">
@@ -29,12 +27,11 @@ Script
       <div v-else>
         <div class="flexParamBoard">
           <div v-for="param in script.params" class="flexParam">
-            <param-script :key="param.id" :param="param" :ref="'param-script-' + param.id"
-              @value-change="onValueChange(param.id, $event)">
+            <param-script :key="param.id" :param="param" v-model="formData[param.id]">
             </param-script>
           </div>
         </div>
-        <button type="button" class="button-small" @click="resetForm()">Reset form</button>
+        <button type="button" class="button-small" @click="resetFormData()">Reset form</button>
       </div>
     </div>
 
@@ -53,7 +50,7 @@ Script
       <span v-if="runResult.success"> &check; </span>
       <span v-else> &cross; </span>
       <strong>[[ runResult.message ]]</strong>
-      <small>at [[ runResult.runAt | formatTime ]]</small>
+      <small>at [[ formatTime(runResult.runAt) ]]</small>
     </div>
     <template v-if="runResult.dataOutput">
       <pre v-if="runResult.template == 'json'" class="dataOutputJson">[[ runResult.dataOutput ]]</pre>
@@ -96,4 +93,8 @@ Script
   const url_api_get_scripts = "{{ url_for('api_get_scripts') }}"
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='vuejs/script.js') }}"></script>
+{% include 'component/param-script.html' %}
+{% include 'component/execution-history.html' %}
+<script type="text/javascript">app.mount('#app-script');</script>
+
 {% endblock %}

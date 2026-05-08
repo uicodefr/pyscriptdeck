@@ -3,6 +3,7 @@ from datetime import datetime
 import bcrypt
 from pyscriptdeck.config import getconfig
 from pyscriptdeck import db
+from sqlalchemy import text
 
 
 def db_commit():
@@ -76,12 +77,12 @@ class ExecutionHistoryDao:
 
     @staticmethod
     def delete_older_than(date) -> int:
-        sql = "DELETE FROM execution_history WHERE run_at < :date"
+        sql = text("DELETE FROM execution_history WHERE run_at < :date")
         return db.session.execute(sql, {"date": date}).rowcount
 
     @staticmethod
     def find_distinct_script_id() -> List[str]:
-        sql = "SELECT DISTINCT script_id FROM execution_history"
+        sql = text("SELECT DISTINCT script_id FROM execution_history")
         result = db.session.execute(sql)
         return list(map(lambda line: line[0], result))
 
@@ -89,6 +90,7 @@ class ExecutionHistoryDao:
     def delete_for_number(script_id: str, ids_to_keep: List[int]) -> int:
         sql = "DELETE FROM execution_history WHERE script_id = :script_id AND "
         sql += _join_sql_for_list("id != :ids_to_keep", " AND ", ids_to_keep)
+        sql = text(sql)
         params = _get_param_for_list("ids_to_keep", ids_to_keep)
         params["script_id"] = script_id
         return db.session.execute(sql, params).rowcount

@@ -52,7 +52,7 @@ class Main:
         return script_id in self._scripts
 
     def get_scripts_descriptions(self):
-        if current_app.config["ENV"] == "development":
+        if current_app.debug:
             self._load_modules()
         logger.info("Get scripts descriptions")
         scripts = list(map(lambda script: script.get_full_description(), self._scripts.values()))
@@ -72,7 +72,7 @@ class Main:
 
     def run_script(self, script_id: str, data_input: Dict):
         try:
-            script_result = self._scripts[script_id].run(data_input).dict()
+            script_result = self._scripts[script_id].run(data_input).model_dump()
         except Exception as exception:
             logger.exception("Error while running the script %s", script_id)
             script_result = {}

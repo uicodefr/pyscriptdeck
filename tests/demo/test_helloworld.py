@@ -7,7 +7,7 @@ _SCRIPT_ID_HELLO_WITH_PARAMS = "pyscriptdemo.helloworld.HelloWorldWithParams"
 def test_hello(app, client):
     login(client)
 
-    response = client.post("/api/scripts/" + _SCRIPT_ID_HELLO + "/_run")
+    response = client.post("/api/scripts/" + _SCRIPT_ID_HELLO + "/_run", json={})
     assert response.json["success"]
     assert response.json["message"] == "Hello World !"
     test_output = "Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister"
@@ -17,9 +17,9 @@ def test_hello(app, client):
 def test_hello_with_params(app, client):
     login(client)
 
-    response = client.post("/api/scripts/" + _SCRIPT_ID_HELLO_WITH_PARAMS + "/_run")
+    response = client.post("/api/scripts/" + _SCRIPT_ID_HELLO_WITH_PARAMS + "/_run", json={})
     assert response.json["success"]
-    assert response.json["dataOutput"]["values"] is None
+    assert response.json["dataOutput"]["values"] == {}
 
     params = {"a":"default value", "b":10, "c":True, "d":"My text \n in textarea", "e":"1", "f":"b"}
     response = client.post("/api/scripts/" + _SCRIPT_ID_HELLO_WITH_PARAMS + "/_run", json=params)

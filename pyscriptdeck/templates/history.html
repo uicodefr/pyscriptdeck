@@ -9,7 +9,6 @@ History
 {% endblock %}
 
 {% block content %}
-{% include 'component/execution-history.html' %}
 <div id="app-history">
 
   <h3>Execution History</h3>
@@ -26,4 +25,7 @@ History
   const url_api_get_executions = "{{ url_for('api_get_executions') }}"
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='vuejs/history.js') }}"></script>
+{% include 'component/execution-history.html' %}
+<script type="text/javascript">app.mount('#app-history');</script>
+
 {% endblock %}

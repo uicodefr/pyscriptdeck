@@ -37,7 +37,7 @@ class SimpleApi(ScriptDeck):
             return ScriptResult(success=False, message="Invalid json response")
 
         message = "The answer is '{}'".format(yes_no_response.answer)
-        return ScriptResult(success=True, message=message, dataOutput=yes_no_response.dict())
+        return ScriptResult(success=True, message=message, dataOutput=yes_no_response.model_dump())
 
 
 class WeatherApi(ScriptDeck):

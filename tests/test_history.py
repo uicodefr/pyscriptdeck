@@ -23,7 +23,7 @@ def test_api_executions(client):
 
     # Run a HelloWorld 2 times
     for i in range(2):
-        response = client.post("/api/scripts/pyscriptdemo.helloworld.HelloWorld/_run")
+        response = client.post("/api/scripts/pyscriptdemo.helloworld.HelloWorld/_run", json={})
         assert response.status_code == 200
 
         response = client.get("/api/executions")

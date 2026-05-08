@@ -31,7 +31,7 @@ def test_api_script(client):
         "params": []
     }
 
-    response = client.post("/api/scripts/" + _SCRIPT_ID + "/_run")
+    response = client.post("/api/scripts/" + _SCRIPT_ID + "/_run", json={})
     assert response.status_code == 200
     test_output = "Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister, Hello Mister"
     assert response.json["dataOutput"] == test_output

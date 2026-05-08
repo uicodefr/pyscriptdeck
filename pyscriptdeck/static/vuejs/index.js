@@ -1,51 +1,46 @@
-const appIndex = new Vue({
-  delimiters: ['[[',']]'],
-  el: '#app-index',
-  data: {
-    loading: true,
-    searchForm: {
+const { createApp, ref, reactive, computed, onMounted } = Vue;
+
+const app = createApp({
+  compilerOptions: {
+    delimiters: ['[[',']]'],
+  },
+  setup() {
+    const loading = ref(true);
+    const scripts = ref([]);
+    const groups = ref([]);
+    const searchForm = reactive({
       txt: '',
       group: null
-    },
-    scripts: [],
-    filteredScripts: [],
-    groups: []
-  },
-  methods: {
-    filterScripts: function() {
-      this.filteredScripts = this.scripts.filter(script => {
-        if (this.searchForm.group && this.searchForm.group !== script.group) {
+    });
+
+    const filteredScripts = computed(() => {
+      return scripts.value.filter(script => {
+        if (searchForm.group && searchForm.group !== script.group) {
           return false;
         }
-        if (this.searchForm.txt) {
-          const splitTxtArray = this.searchForm.txt.toLowerCase().split(' ');
+        if (searchForm.txt) {
+          const splitTxtArray = searchForm.txt.toLowerCase().split(' ');
           return splitTxtArray.every(splitTxt =>
             script.id.toLowerCase().includes(splitTxt) ||
             script.name.toLowerCase().includes(splitTxt) ||
             script.description.toLowerCase().includes(splitTxt)
-          )
+          );
         }
         return true;
       });
-    }
-  },
-  watch: {
-    searchForm: {
-      handler: function(newValue, oldValue) {
-        this.filterScripts();
-      },
-      deep: true
-    }
-  },
-  mounted () {
-    axios.get(url_api_get_scripts).then(response => {
-      this.scripts = response.data;
-      this.filteredScripts = this.scripts;
-      this.loading = false;
     });
 
-    axios.get(url_api_get_groups).then(response => {
-      this.groups = response.data;
+    onMounted(() => {
+      axios.get(url_api_get_scripts).then(response => {
+        scripts.value = response.data;
+        loading.value = false;
+      });
+
+      const loadGroups = axios.get(url_api_get_groups).then(response => {
+        groups.value = response.data;
+      });
     });
+
+    return {loading, groups, searchForm, filteredScripts};
   }
 });

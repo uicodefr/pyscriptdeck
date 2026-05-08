@@ -1,7 +1,7 @@
 """ Core Module used by scripts and Main module """
 import logging
 import os
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Optional
 import abc
 from pydantic import BaseModel
 
@@ -19,7 +19,7 @@ class ScriptResult(BaseModel):
     """ Result for a script for the run method """
     success: bool
     message: str
-    dataOutput: Any
+    dataOutput: Optional[Any] = None
     template: str = "json"
 
 class ScriptException(Exception):
@@ -57,7 +57,7 @@ class ScriptDeck(abc.ABC):
 
     def get_full_description(self) -> Dict:
         """ return the full description (description + id) """
-        full_description = self.get_description().dict()
+        full_description = self.get_description().model_dump()
         full_description["id"] = self.get_id()
         return full_description
 

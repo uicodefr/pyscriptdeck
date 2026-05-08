@@ -13,7 +13,7 @@
     </thead>
     <tbody>
       <tr v-for="execution in executions">
-        <td> [[ execution.runAt | formatDatetime ]] </td>
+        <td> [[ formatDatetime(execution.runAt) ]] </td>
         <td v-if="showScript"><small class="breakWord"> [[ execution.scriptId ]] </small></td>
         <td v-bind:class="{ error: !execution.success, success: execution.success}">
           <span v-if="execution.success"> &check; </span>
@@ -29,7 +29,7 @@
 </script>
 
 <script type="text/javascript">
-  Vue.component('execution-history', {
+  app.component('execution-history', {
     delimiters: ['[[', ']]'],
     template: '#execution-history-template',
     props: {
@@ -38,6 +38,9 @@
         type: Boolean,
         default: false
       }
+    },
+    setup() {
+      return {formatDatetime};
     }
   });
 </script>

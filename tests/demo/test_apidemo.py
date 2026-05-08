@@ -15,7 +15,7 @@ def test_simple_api(app, client, requests_mock):
         "image": "image_url"
     })
 
-    response = client.post("/api/scripts/" + _SCRIPT_ID_SIMPLE + "/_run")
+    response = client.post("/api/scripts/" + _SCRIPT_ID_SIMPLE + "/_run", json={})
     print(response.json)
     assert response.json["success"]
     assert (response.json["message"] == "The answer is 'yes'"

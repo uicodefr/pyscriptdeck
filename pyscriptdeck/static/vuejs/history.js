@@ -1,14 +1,20 @@
-const appHistory = new Vue({
-  delimiters: ['[[',']]'],
-  el: '#app-history',
-  data: {
-    loading: true,
-    executions: null,
+const { createApp, ref, onMounted } = Vue;
+
+const app = createApp({
+  compilerOptions: {
+    delimiters: ['[[',']]'],
   },
-  mounted () {
-    axios.get(url_api_get_executions).then(response => {
-      this.executions = response.data;
-      this.loading = false;
+  setup() {
+    const loading = ref(true);
+    const executions = ref([]);
+
+    onMounted(() => {
+      axios.get(url_api_get_executions).then(response => {
+        executions.value = response.data;
+        loading.value = false;
+      });
     });
-  }
+
+    return {loading, executions};
+  },
 });

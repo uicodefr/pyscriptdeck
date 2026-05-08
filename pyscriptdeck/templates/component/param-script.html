@@ -7,31 +7,30 @@
 
   <template v-if="standardInputTypes.includes(param.type)">
     <input :id="'param_' + param.id" :type="param.type" :placeholder="param.placeholder"
-      v-model="paramValue" class="u-full-width" />
+      v-model="proxyValue" class="u-full-width" />
   </template>
 
   <template v-else-if="param.type == 'checkbox'">
     <label>
-      <input type="checkbox" v-model="paramValue" />
+      <input type="checkbox" v-model="proxyValue" />
       <span class="label-body">[[ param.label ]]</span>
     </label>
   </template>
 
   <template v-else-if="param.type == 'textarea'">
-    <textarea :placeholder="param.placeholder" v-model="paramValue"
+    <textarea :placeholder="param.placeholder" v-model="proxyValue"
     class="u-full-width"></textarea>
   </template>
 
   <template v-else-if="param.type == 'radio'">
     <label v-for="radioValue in param.values" class="radio-label">
-      <input type="radio" :name="param.id" :value="radioValue.value"
-        v-model="paramValue" />
+      <input type="radio" :name="param.id" :value="radioValue.value" v-model="proxyValue" />
         [[ radioValue.label ]]
     </label>
   </template>
 
   <template v-else-if="param.type == 'select'">
-    <select v-model="paramValue" :multiple="param.multiple" class="u-full-width">
+    <select v-model="proxyValue" :multiple="param.multiple" class="u-full-width">
       <option v-for="selectValue in param.values" :value="selectValue.value">
         [[ selectValue.label ]]
       </option>
@@ -49,29 +48,27 @@
 </script>
 
 <script type="text/javascript">
-  Vue.component('param-script', {
+  app.component('param-script', {
     delimiters: ['[[', ']]'],
     template: '#param-script-template',
-    props:  ['param'],
-    data: function() {
-      return {
-        standardInputTypes: ['text', 'password', 'number', 'date', 'datetime', 'time',
-          'email', 'url'],
-        paramValue: this.param.default
-      }
+    props: {
+      modelValue: [String, Number, Boolean],
+      param: Object
     },
-    methods: {
-      resetParamValue: function() {
-        this.paramValue = this.param.default;
-      }
-    },
-    watch: {
-      paramValue: {
-        handler: function(newParamValue, oldParamValue) {
-          this.$emit('value-change', newParamValue);
+    emits: ['update:modelValue'],
+    setup(props, { emit }) {
+      const standardInputTypes = ['text', 'password', 'number', 'date', 'datetime', 'time', 'email', 'url'];
+
+      const proxyValue = computed({
+        get() {
+          return props.modelValue;
         },
-        immediate: true,
-      }
+        set(newValue) {
+          emit('update:modelValue', newValue);
+        }
+      });
+
+      return {standardInputTypes, proxyValue};
     }
   });
 </script>
