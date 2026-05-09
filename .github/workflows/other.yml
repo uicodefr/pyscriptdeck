@@ -13,11 +13,13 @@ jobs:
       CI: true
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v6
+
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v6
       with:
-        python-version: 3.8
+        python-version: 3.14
 
     - name: Init
       run: |
@@ -27,8 +29,6 @@ jobs:
           echo ERROR: Wrong version 1>&2
           exit 1
         fi
-      working-directory: ${{ env.working-directory }}
 
     - name: Test
       run: make test
-      working-directory: ${{ env.working-directory }}

@@ -1,0 +1,45 @@
+name: Build App
+
+on:
+  workflow_call:
+    secrets:
+      NEXUS_PASSWORD:
+        required: true
+
+jobs:
+  build-client:
+    runs-on: ubuntu-latest
+    env:
+      CI: true
+      SKIP_PUBLISH: true
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.14
+
+      - name: Init script
+        run: |
+          branch=$GITHUB_REF_NAME
+          if [[ "$branch" = "master" ]]; then
+            ./version.sh remove-snapshot
+          fi
+          if [[ "$branch" = "master" || "$branch" = "develop" ]]; then
+            echo "PUBLISH=OK" >> $GITHUB_ENV
+          fi
+
+      - name: Test
+        run: make test
+
+      - name : Build And Archiving
+        if: ${{ env.PUBLISH && env.SKIP_PUBLISH != 'true' }}
+        run: make build
+
+      - name : Containerize Demo
+        if: ${{ env.PUBLISH && env.SKIP_PUBLISH != 'true' }}
+        run: make containerize_demo

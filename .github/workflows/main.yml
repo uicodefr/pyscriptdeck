@@ -1,0 +1,52 @@
+name: Main CI
+
+on:
+  push:
+    branches:
+      - 'develop'
+      - 'master'
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    env:
+      SKIP_DEPLOY: true
+    outputs:
+      deploy: ${{ steps.init.outputs.DEPLOY }}
+      appVersion: ${{ steps.init.outputs.APP_VERSION }}
+      skip_deploy: ${{ env.SKIP_DEPLOY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Init script
+        id: init
+        run: |
+          version=$(sed "s/^    version=\"\(.*\)\",$/\1/;t;d" setup.py)
+          echo "Version: "$version
+          if [[ ! $version =~ "SNAPSHOT" ]]; then
+            echo ERROR: Wrong version 1>&2
+            exit 1
+          fi
+          echo "App Version : $version"
+          echo "APP_VERSION=$version" >> $GITHUB_OUTPUT
+
+  build-app:
+    needs: [prepare]
+    uses: ./.github/workflows/build-app.yml
+    secrets:
+      NEXUS_PASSWORD: ${{ secrets.NEXUS_PASSWORD }}
+
+  deploy:
+    needs: [prepare, build-app]
+    if: ${{ needs.prepare.outputs.deploy && needs.prepare.outputs.skip_deploy != 'true' }}
+    uses: ./.github/workflows/deploy.yml
+    with:
+      deploy: ${{ needs.prepare.outputs.deploy }}
+      appVersion: ${{ needs.prepare.outputs.appVersion }}
+    secrets:
+      QA_SSH_HOST: ${{ secrets.QA_HOST }}
+      QA_SSH_KEY: ${{ secrets.QA_SSH_KEY }}
+      PROD_SSH_HOST: ${{ secrets.PROD_HOST }}
+      PROD_SSH_KEY: ${{ secrets.PROD_SSH_KEY }}
